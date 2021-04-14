@@ -1,22 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta name="name" content="Classicads">
-      <meta name="type" content="Classified Advertising">
-      <meta name="title" content="Classicads - Classified Ads HTML Template">
-      <meta name="keywords" content="classicads, classified, ads, classified ads, listing, business, directory, jobs, marketing, portal, advertising, local, posting, ad listing, ad posting,">
-      <title>Classicads - Home</title>
-      <link rel="icon" href="images/favicon.png {{ asset('assets/fonts/flaticon/flaticon.css')}}">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-      <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.min.css')}}">
-      <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css')}}">
-      <link rel="stylesheet" href="{{ asset('assets/css/custom/main.css')}}">
-      <link rel="stylesheet" href="{{ asset('assets/css/custom/index.css')}}">
-      @yield('css')
-   </head>
-   <body>
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="icon" href="images/favicon.png {{ asset('assets/fonts/flaticon/flaticon.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+
+    <!-- Styles -->
+   <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.min.css')}}">
+   <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css')}}">
+   <link rel="stylesheet" href="{{ asset('assets/css/custom/main.css')}}">
+   <link rel="stylesheet" href="{{ asset('assets/css/custom/index.css')}}">
+
+   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
+
+   @yield('css')
+
+</head>
+<body>
+   <div id="app">
       <header class="header-part">
          <div class="container">
             <div class="header-content">
@@ -98,7 +110,7 @@
                   <a href="#" class="sidebar-avatar"><img src="images/avatar/01.jpg" alt="avatar">
                   </a>
                   <h4>
-                     <a href="#" class="sidebar-name">Jackon Honson</a>
+                     <a href="#" class="sidebar-name">{{ Auth::user()->name }}</a>
                   </h4>
                   @endif
                   <a href="ad-post.html" class="btn btn-inline sidebar-btn">
@@ -164,15 +176,17 @@
                   @if(Auth::check())
                   <div class="tab-pane" id="author-menu">
                      <ul class="navbar-list">
-                        <li class="navbar-item"><a class="navbar-link" href="dashboard.html">Dashboard</a></li>
-                        <li class="navbar-item"><a class="navbar-link" href="profile.html">Profile</a></li>
-                        <li class="navbar-item"><a class="navbar-link" href="ad-post.html">Ad Post</a></li>
-                        <li class="navbar-item"><a class="navbar-link" href="my-ads.html">My Ads</a></li>
-                        <li class="navbar-item"><a class="navbar-link" href="setting.html">Settings</a></li>
-                        <li class="navbar-item navbar-dropdown"><a class="navbar-link" href="bookmark.html"><span>bookmark</span><span>0</span></a></li>
-                        <li class="navbar-item navbar-dropdown"><a class="navbar-link" href="#"><span>Message</span><span>0</span></a></li>
-                        <li class="navbar-item navbar-dropdown"><a class="navbar-link" href="#"><span>Notification</span><span>0</span></a></li>
-                        <li class="navbar-item"><a class="navbar-link" href="user-form.html">Logout</a></li>
+                        <li class="navbar-item"><a class="navbar-link" href="{{route('admin.dashboard')}}">Dashboard</a></li>
+                        <li class="navbar-item"><a class="navbar-link" href="{{route('admin.ad.create')}}">Ad Post</a></li>
+                        <li class="navbar-item"><a class="navbar-link" href="{{route('admin.ads.index')}}">My Ads</a></li>
+                        <li class="navbar-item navbar-dropdown"><a class="navbar-link" href="{{route('admin.saved.ads')}}"><span>Bookmark</span><span>0</span></a></li>
+                        <li class="navbar-item navbar-dropdown"><a class="navbar-link" href="{{route('admin.chats')}}"><span>Chat</span><span>0</span></a></li>
+                        <li class="navbar-item"><a class="navbar-link" href="{{route('admin.user.profile')}}">Edit Profile</a></li>
+                        <li class="navbar-item"><a class="navbar-link" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">Logout</a></li>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                      </ul>
                   </div>
                   @endif
@@ -195,9 +209,9 @@
          </div>
       </div>
      
-      @yield('content')
-
-
+           @yield('content')
+   
+   
       <footer class="footer-part">
          <div class="container">
             <div class="row newsletter">
@@ -257,7 +271,7 @@
                </div>
                <div class="col-sm-6 col-md-6 col-lg-3">
                   <div class="footer-info">
-                     <a href="#"><img src="images/logo.png" alt="logo"></a>
+                     <a href="#"><img src="{{asset('assets/images/logo.png')}}" alt="logo"></a>
                      <ul class="footer-count">
                         <li>
                            <h5>929,238</h5>
@@ -274,9 +288,37 @@
             <div class="row">
                <div class="col-lg-12">
                   <div class="footer-card-content">
-                     <div class="footer-payment"><a href="#"><img src="images/pay-card/01.jpg" alt="01"></a><a href="#"><img src="images/pay-card/02.jpg" alt="02"></a><a href="#"><img src="images/pay-card/03.jpg" alt="03"></a><a href="#"><img src="images/pay-card/04.jpg" alt="04"></a></div>
-                     <div class="footer-option"><button type="button"><i class="fas fa-globe"></i>English</button><button type="button"><i class="fas fa-dollar-sign"></i>USD</button></div>
-                     <div class="footer-app"><a href="#"><img src="images/play-store.png" alt="play-store"></a><a href="#"><img src="images/app-store.png" alt="app-store"></a></div>
+                     <div class="footer-payment">
+                        <a href="#">
+                           <img src="{{asset('assets/images/pay-card/01.jpg')}}" alt="01">
+                        </a>
+                        <a href="#">
+                           <img src="{{asset('assets/images/pay-card/02.jpg')}}" alt="02"></a>
+                        <a href="#">
+                           <img src="{{asset('assets/images/pay-card/03.jpg')}}" alt="03">
+                        </a>
+                        <a href="#">
+                           <img src="{{asset('assets/images/pay-card/04.jpg')}}" alt="04">
+                        </a>
+                     </div>
+                     <div class="footer-option">
+                        <button type="button">
+                           <i class="fas fa-globe"></i>
+                           English
+                        </button>
+                        <button type="button">
+                           <i class="fas fa-dollar-sign"></i>
+                           USD
+                        </button>
+                        </div>
+                     <div class="footer-app">
+                        <a href="#">
+                           <img src="{{asset('assets/images/play-store.png')}}" alt="play-store">
+                        </a>
+                        <a href="#">
+                           <img src="{{asset('assets/images/app-store.png')}}" alt="app-store">
+                        </a>
+                     </div>
                   </div>
                </div>
             </div>
@@ -299,15 +341,56 @@
             </div>
          </div>
       </footer>
+   </div>
 
 
-      <script src="{{ asset('assets/js/vendor/jquery-1.12.4.min.js')}}"></script>
-      <script src="{{ asset('assets/js/vendor/popper.min.js')}}"></script>
-      <script src="{{ asset('assets/js/vendor/bootstrap.min.js ')}}"></script>
-      <script src="{{ asset('assets/js/vendor/slick.min.js')}}"></script>
-      <script src="{{ asset('assets/js/custom/slick.js')}}"></script>
-      <script src="{{ asset('assets/js/custom/main.js ')}}"></script>
-    @yield('js')
-   </body>
-   
+   <script src="{{ asset('assets/js/vendor/jquery-1.12.4.min.js')}}"></script>
+   <script src="{{ asset('assets/js/vendor/popper.min.js')}}"></script>
+   <script src="{{ asset('assets/js/vendor/bootstrap.min.js ')}}"></script>
+   <script src="{{ asset('assets/js/vendor/slick.min.js')}}"></script>
+   <script src="{{ asset('assets/js/custom/slick.js')}}"></script>
+   <script src="{{ asset('assets/js/custom/custom.js ')}}"></script>
+   <script src="{{ asset('assets/js/vendor/jquery-ui.min.js')}}"></script>
+ 
+   <script src="{{ asset('assets/js/custom/main.js ')}}"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+   <script>
+      @if(Session::has('message'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+                    toastr.success("{{ session('message') }}");
+            @endif
+
+            @if(Session::has('error'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+                    toastr.error("{{ session('error') }}");
+            @endif
+
+            @if(Session::has('info'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+                    toastr.info("{{ session('info') }}");
+            @endif
+
+            @if(Session::has('warning'))
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+                    toastr.warning("{{ session('warning') }}");
+            @endif
+   </script>
+   @yield('js')
+</body>
 </html>
