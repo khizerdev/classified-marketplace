@@ -35,7 +35,7 @@
             </div>
          </div>
          <div class="user-form-category">
-            <div class="user-form-header"><a href="#"><img src="{{asset('assets/images/logo.png')}}" alt="logo"></a><a href="index.html"><i class="fas fa-arrow-left"></i></a></div>
+            <div class="user-form-header"><a href="#"><img src="{{asset('assets/images/logo.png')}}" alt="logo"></a><a href="{{route('home')}}"><i class="fas fa-arrow-left"></i></a></div>
             <div class="user-form-category-btn">
                <ul class="nav nav-tabs">
                   <li><a href="#login-tab" class="nav-link active" data-toggle="tab">sign in</a></li>
@@ -94,6 +94,12 @@
                      </div>
                   </div>
                </form>
+               <div class="user-form-devider">
+                  <p>or</p>
+               </div>
+               <ul class="user-form-option">
+                  <li><a href="{{ url('auth/facebook')}}"><i class="fab fa-facebook-f"></i><span>facebook</span></a></li>
+               </ul>
                <div class="user-form-direction">
                   <p>Don't have an account? click on the <span>( sign up )</span>button above.</p>
                </div>
@@ -104,9 +110,7 @@
                    <p>Setup a new account in a minute.</p>
                 </div>
                 <ul class="user-form-option">
-                   <li><a href="#"><i class="fab fa-facebook-f"></i><span>facebook</span></a></li>
-                   <li><a href="#"><i class="fab fa-twitter"></i><span>twitter</span></a></li>
-                   <li><a href="#"><i class="fab fa-google"></i><span>google</span></a></li>
+                  <li><a href="{{ url('auth/facebook')}}"><i class="fab fa-facebook-f"></i><span>facebook</span></a></li>
                 </ul>
                 <div class="user-form-devider">
                    <p>or</p>

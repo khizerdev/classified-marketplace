@@ -105,9 +105,7 @@
                   <p>Setup a new account in a minute.</p>
                </div>
                <ul class="user-form-option">
-                  <li><a href="#"><i class="fab fa-facebook-f"></i><span>facebook</span></a></li>
-                  <li><a href="#"><i class="fab fa-twitter"></i><span>twitter</span></a></li>
-                  <li><a href="#"><i class="fab fa-google"></i><span>google</span></a></li>
+                  <li><a href="{{ url('auth/facebook')}}"><i class="fab fa-facebook-f"></i><span>facebook</span></a></li>
                </ul>
                <div class="user-form-devider">
                   <p>or</p>

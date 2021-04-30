@@ -9,14 +9,14 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+   
 
     <!-- Fonts -->
-    <link rel="icon" href="images/favicon.png {{ asset('assets/fonts/flaticon/flaticon.css')}}">
+    <link rel="icon" href="images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 
     <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('assets/fonts/flaticon/flaticon.css')}}">
    <link rel="stylesheet" href="{{ asset('assets/css/vendor/slick.min.css')}}">
    <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css')}}">
    <link rel="stylesheet" href="{{ asset('assets/css/custom/main.css')}}">
@@ -26,9 +26,69 @@
 
    @yield('css')
 
+   <style>
+      .nav-link.dropdown-toggle {
+    color: white !important;
+}
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+}
+
+.navbar.bg-primary {
+    background-color: #0044bb!important;
+}
+.navbar .dropdown-item:hover {
+    color: #16181b;
+    text-decoration: none;
+    background-color: #0044bb;
+    color: white;
+}
+
+/* hover dropdown menus */
+@media only screen and (max-width: 991px) {
+.navbar-hover .show > .dropdown-toggle::after{
+transform: rotate(-90deg);
+}
+}
+@media only screen and (min-width: 492px) {
+
+.navbar-hover .collapse ul li{position:relative;}
+.navbar-hover .collapse ul li:hover> ul{display:block}
+.navbar-hover .collapse ul ul{position:absolute;top:100%;left:0;min-width:250px;display:none}
+.navbar-hover .collapse ul ul ul{position:absolute;top:0;left:100%;min-width:250px;display:none
+
+}}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+body.modal-open {
+    overflow: visible;
+}
+.dash-menu-list ul li .active {
+    color: white;
+    text-shadow: var(--primary-tshadow);
+    border-bottom: 2px solid var(--primary);
+    background: var(--primary);
+}
+   </style>
+
+   
+
 </head>
 <body>
-   <div id="app">
+   <div >
+      
       <header class="header-part">
          <div class="container">
             <div class="header-content">
@@ -42,7 +102,7 @@
                      </li>
                      <li>
                         @if(!Auth::check())
-                        <a href="{{route('home')}}" class="header-user"><i class="fas fa-user"></i><span>Login</span></a>
+                        <a href="{{route('login')}}" class="header-user"><i class="fas fa-user"></i><span>Login</span></a>
                         @endif
                      </li>
                      <li>
@@ -89,7 +149,7 @@
                      <li><button class="header-message"><i class="fas fa-envelope"></i><sup>0</sup></button></li>
                   </ul>
                   @endif
-                  <a href="ad-post.html" class="btn btn-inline"><i class="fas fa-plus-circle"></i><span>post your ad</span></a>
+                  <a href="{{route('admin.ad.create')}}" class="btn btn-inline"><i class="fas fa-plus-circle"></i><span>post your ad</span></a>
                </div>
             </div>
          </div>
@@ -107,70 +167,32 @@
             <div class="sidebar-content">
                <div class="sidebar-profile">
                   @if(Auth::check())
-                  <a href="#" class="sidebar-avatar"><img src="images/avatar/01.jpg" alt="avatar">
+                  <a href="#" class="sidebar-avatar"><img src="<?php echo (Auth::user()->profile->avatar != NULL) ? url(Auth::user()->profile->avatar) : url("https://statics.olx.com.pk/external/base/img/avatar_4.png"); ?>" alt="avatar">
                   </a>
                   <h4>
                      <a href="#" class="sidebar-name">{{ Auth::user()->name }}</a>
                   </h4>
                   @endif
-                  <a href="ad-post.html" class="btn btn-inline sidebar-btn">
+                  <a href="{{route('admin.ad.create')}}" class="btn btn-inline sidebar-btn">
                      <i class="fas fa-plus-circle"></i>
                      <span>post your ad</span>
                   </a>
                </div>
                <div class="sidebar-menu">
                   <ul class="nav nav-tabs">
-                     <li><a href="#main-menu" class="nav-link active" data-toggle="tab">Main Menu</a></li>
+                     <li><a href="#main-menu" class="nav-link active" data-toggle="tab">Menu</a></li>
                      @if(Auth::check())
-                     <li><a href="#author-menu" class="nav-link" data-toggle="tab">Author Menu</a>
+                     <li><a href="#author-menu" class="nav-link" data-toggle="tab">Profile</a>
                      </li>
                      @endif
                   </ul>
                   <div class="tab-pane active" id="main-menu">
                      <ul class="navbar-list">
-                        <li class="navbar-item"><a class="navbar-link" href="index.html">Home</a></li>
-                        <li class="navbar-item navbar-dropdown">
-                           <a class="navbar-link" href="#"><span>Categories</span><i class="fas fa-plus"></i></a>
-                           <ul class="dropdown-list">
-                              <li><a class="dropdown-link" href="category-list.html">category list</a></li>
-                              <li><a class="dropdown-link" href="category-details.html">category details</a></li>
-                           </ul>
+                        <li class="navbar-item">
+                           <a class="navbar-link" href="{{route('home')}}">Home</a>
                         </li>
-                        <li class="navbar-item navbar-dropdown">
-                           <a class="navbar-link" href="#"><span>Advertise List</span><i class="fas fa-plus"></i></a>
-                           <ul class="dropdown-list">
-                              <li><a class="dropdown-link" href="grid-list.html">grid list</a></li>
-                              <li><a class="dropdown-link" href="leftbar-list.html">leftbar list</a></li>
-                              <li><a class="dropdown-link" href="rightbar-list.html">rightbar list</a></li>
-                           </ul>
-                        </li>
-                        <li class="navbar-item navbar-dropdown">
-                           <a class="navbar-link" href="#"><span>Advertise details</span><i class="fas fa-plus"></i></a>
-                           <ul class="dropdown-list">
-                              <li><a class="dropdown-link" href="grid-details.html">grid details</a></li>
-                              <li><a class="dropdown-link" href="leftbar-details.html">leftbar details</a></li>
-                              <li><a class="dropdown-link" href="rightbar-details.html">rightbar details</a></li>
-                           </ul>
-                        </li>
-                        <li class="navbar-item navbar-dropdown">
-                           <a class="navbar-link" href="#"><span>Pages</span><i class="fas fa-plus"></i></a>
-                           <ul class="dropdown-list">
-                              <li><a class="dropdown-link" href="about.html">About Us</a></li>
-                              <li><a class="dropdown-link" href="compare.html">Ad Compare</a></li>
-                              <li><a class="dropdown-link" href="cities.html">Ad by Cities</a></li>
-                              <li><a class="dropdown-link" href="price.html">Pricing Plan</a></li>
-                              <li><a class="dropdown-link" href="user-form.html">User Form</a></li>
-                              <li><a class="dropdown-link" href="404.html">404</a></li>
-                           </ul>
-                        </li>
-                        <li class="navbar-item navbar-dropdown">
-                           <a class="navbar-link" href="#"><span>blogs</span><i class="fas fa-plus"></i></a>
-                           <ul class="dropdown-list">
-                              <li><a class="dropdown-link" href="blog-list.html">Blog list</a></li>
-                              <li><a class="dropdown-link" href="blog-details.html">blog details</a></li>
-                           </ul>
-                        </li>
-                        <li class="navbar-item"><a class="navbar-link" href="contact.html">Contact</a></li>
+                        
+                        <li class="navbar-item"><a class="navbar-link" href="{{route('contact')}}">Contact</a></li>
                      </ul>
                   </div>
                   @if(Auth::check())
@@ -179,7 +201,7 @@
                         <li class="navbar-item"><a class="navbar-link" href="{{route('admin.dashboard')}}">Dashboard</a></li>
                         <li class="navbar-item"><a class="navbar-link" href="{{route('admin.ad.create')}}">Ad Post</a></li>
                         <li class="navbar-item"><a class="navbar-link" href="{{route('admin.ads.index')}}">My Ads</a></li>
-                        <li class="navbar-item navbar-dropdown"><a class="navbar-link" href="{{route('admin.saved.ads')}}"><span>Bookmark</span><span>0</span></a></li>
+                        <li class="navbar-item navbar-dropdown"><a class="navbar-link" href="{{route('admin.saved.index')}}"><span>Bookmark</span><span>0</span></a></li>
                         <li class="navbar-item navbar-dropdown"><a class="navbar-link" href="{{route('admin.chats')}}"><span>Chat</span><span>0</span></a></li>
                         <li class="navbar-item"><a class="navbar-link" href="{{route('admin.user.profile')}}">Edit Profile</a></li>
                         <li class="navbar-item"><a class="navbar-link" href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -192,7 +214,7 @@
                   @endif
                </div>
                <div class="sidebar-footer">
-                  <p>All Rights Reserved By <a href="#">Classicads</a></p>
+                  <p>All Rights Reserved By <a href="{{route('home')}}">Classicads</a></p>
                </div>
             </div>
          </div>
@@ -200,14 +222,65 @@
       <div class="btmbar-part">
          <div class="container">
             <ul class="btmbar-widget">
-               <li><a href="user-form.html"><i class="fas fa-user"></i></a></li>
+               <li><a href="{{route('login')}}"><i class="fas fa-user"></i></a></li>
                <li><a href="#"><i class="fas fa-star"></i><sup>0</sup></a></li>
-               <li><a class="plus-btn" href="ad-post.html"><i class="fas fa-plus"></i><span>Ad Your Post</span></a></li>
+               <li><a class="plus-btn" href="{{route('admin.ad.create')}}"><i class="fas fa-plus"></i><span>Ad Your Post</span></a></li>
                <li><a href="#"><i class="fas fa-bell"></i><sup>0</sup></a></li>
-               <li><a href="#"><i class="fas fa-envelope"></i><sup>0</sup></a></li>
+               <li><a href="{{route('admin.chats')}}"><i class="fas fa-envelope"></i><sup>0</sup></a></li>
             </ul>
          </div>
       </div>
+      <nav class="navbar navbar-expand-md navbar-light bg-primary shadow-sm navbar-hover">
+
+
+         <a class="navbar-brand" href="#"></a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHover"
+             aria-controls="navbarDD" aria-expanded="false" aria-label="Navigation">
+             <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarHover">
+             <ul class="navbar-nav">
+     
+     
+                  @foreach ($menus as $menu)
+                      
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="{{route('by.category' , [$menu->slug] )}}"
+                          data-toggle="dropdown_remove_dropdown_class_for_clickable_link" aria-haspopup="true"
+                          aria-expanded="false">
+                          {{$menu->name}}
+                      </a>
+      
+                      <ul class="dropdown-menu">
+      
+      
+                           @foreach ($menu->subcategories as $submenu)
+                               
+                           <li>
+                               <a class="dropdown-item dropdown-toggle" href="{{route('by.subcategory' , [$menu->slug ,$submenu->slug] )}}">{{$submenu->name}}</a>
+       
+                               <ul class="dropdown-menu">
+                                 @foreach ($submenu->childcategories as $childmenu)
+                                   <li>
+                                       <a class="dropdown-item" href="{{route('by.childcategory' , [$menu->slug ,$submenu->slug,$childmenu->slug] )}}">{{$childmenu->name}}
+                                       </a>
+                                   </li>
+                                   @endforeach
+                               </ul>
+       
+                           </li>
+                           @endforeach
+      
+      
+                      </ul>
+      
+                  </li>
+
+                  @endforeach
+     
+             </ul>
+         </div>
+     </nav>
      
            @yield('content')
    
@@ -391,6 +464,8 @@
                     toastr.warning("{{ session('warning') }}");
             @endif
    </script>
-   @yield('js')
+    <!-- Scripts -->
+    @yield('js')
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
 </html>

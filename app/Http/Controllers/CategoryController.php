@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Symfony\Component\Console\Input\Input;
 
 class CategoryController extends Controller
 {
@@ -14,6 +17,8 @@ class CategoryController extends Controller
     public function index()
     {
         //
+        $categories = Category::all();
+        return view('admin.categories.index',compact('categories'));
     }
 
     /**
@@ -23,7 +28,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -34,7 +39,33 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       
+        $request->validate([
+            'name' => 'required|unique:categories|max:10',
+            'image' => 'required'
+        ], [
+            'name.unique' => 'This category is already been created',
+            'name.required' => 'Category name is required',
+        ]);
+
+        
+        $name = null;
+        if($request->has('image')){
+            $image = $request->image;
+            $name = time().$image->getClientOriginalName();
+            $image->move('images' , $name);
+        }
+    
+        $category = Category::create([
+			'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'image' => 'images/' . $name,
+		]);
+
+
+        if($category){
+            return redirect(route('admin.category.index'))->with('message','Category added Successfully');
+        }
     }
 
     /**
@@ -57,6 +88,9 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
+        $category = Category::find($id);
+        return view('admin.categories.edit' , compact('category'));
+
     }
 
     /**
@@ -68,7 +102,20 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+
+        $name = null;
+        if($request->has('image')){
+            $image = $request->image;
+            $name = time().$image->getClientOriginalName();
+            $image->move('images' , $name);
+            $category->image = 'images/'.$name;
+        }
+
+        $category->name = $request->name;
+        $category->save();
+
+        return redirect(route('admin.category.index'))->with('message' , 'Category Updated Successfully');
     }
 
     /**
@@ -79,6 +126,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        $category = Category::find($id);
+        
+        $category->delete();
+        return redirect(route('admin.category.index'))->with('message' , 'Category Deleted Successfully');
+
     }
 }

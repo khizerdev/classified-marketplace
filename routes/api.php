@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/category' , 'ApiController@getCategory');
+Route::get('/subcategory' , 'ApiController@getSubCategory');
+Route::get('/childcategory' , 'ApiController@getChildCategory');
+
+Route::get('/country' , 'AddressController@getCountry');
+Route::get('/state' , 'AddressController@getState');
+Route::get('/city' , 'AddressController@getCity');

@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','fb_id'
     ];
 
     /**
@@ -41,4 +41,26 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Profile');
     }
+
+    public function ads()
+    {
+        return $this->hasMany('App\Ad');
+    }
+
+    public function country()
+    {
+        $this->hasOne('App\Country');
+    }
+    public function state()
+    {
+        $this->hasOne('App\State');
+    }
+    public function city()
+    {
+        $this->hasOne('App\City');
+    }
+
+    public function saveAd(){
+        return $this->hasMany(SaveAd::class);
+     }
 }
